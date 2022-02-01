@@ -14,13 +14,9 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
-
-from .views import c2b_validation, c2b_confirmation, c2b_status_query
+from django.urls import path, include
 
 urlpatterns = [
-    path('c2b/validation', c2b_validation),
-    path('c2b/confirmation', c2b_confirmation), 
-    path('c2b/status-query', c2b_status_query),
+    path('', include('c2b.urls')),
     path('admin/', admin.site.urls)
 ]

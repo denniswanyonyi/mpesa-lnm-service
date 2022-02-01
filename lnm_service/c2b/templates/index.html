@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block title %} C2B Transactions {% endblock %}
+
+{% block content %}
+<div class="container-fluid p-4">
+    <table class="table table-striped ">
+        <thead>
+            <th>Transaction ID</th>
+            <th>Transaction Type</th>
+            <th>Amount</th>
+            <th>Business Number</th>
+            <th>Bill RefNumber</th>
+            <th>MSISDN</th>
+            <th>Date</th>
+            <th>Status</th>
+            <th>Operation</th>
+        </thead>
+        <tbody>
+            {% for transaction in transactions %}
+                <tr>
+                    <td>{{ transaction.transaction_id }}</td>
+                    <td>{{ transaction.transaction_type }}</td>
+                    <td>{{ transaction.transaction_amount }}</td>
+                    <td>{{ transaction.business_shortcode }}</td>
+                    <td>{{ transaction.bill_refnumber }}</td>
+                    <td>{{ transaction.msisdn }}</td>
+                    <td>{{ transaction.date_recorded }}</td>
+                    <td>{{ transaction.transaction_status }}</td>
+                    <td></td>
+
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

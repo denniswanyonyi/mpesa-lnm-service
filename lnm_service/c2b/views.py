@@ -1,10 +1,23 @@
 from django.http import JsonResponse
+from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 import json
 
 from datetime import datetime
 
 from .models import LnmTransaction
+
+@csrf_exempt
+def index(request):
+
+    transactions = LnmTransaction.objects.order_by('-date_recorded')[:100]
+
+    data = {
+        'transactions': transactions
+    }
+
+    return render(request, "index.html", data)
+
 
 @csrf_exempt
 def c2b_validation(request):
@@ -17,7 +30,7 @@ def c2b_validation(request):
     c2b.transaction_type = data["TransactionType"]
     c2b.transaction_id = data["TransID"]
     c2b.mpesa_transaction_time = data["TransTime"]
-    c2b.trans_amount = data["TransAmount"]
+    c2b.transaction_amount = data["TransAmount"]
     c2b.business_shortcode = data["BusinessShortCode"]
     c2b.bill_refnumber = data["BillRefNumber"]
     c2b.invoice_number = data["InvoiceNumber"]

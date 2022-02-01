@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 
 from pathlib import Path
+from os import path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -43,7 +44,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     # Custom apps
-    'lnm_service'
+    'c2b'
 ]
 
 MIDDLEWARE = [
@@ -61,7 +62,9 @@ ROOT_URLCONF = 'lnm_service.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [
+            path.join(BASE_DIR, 'c2b', 'templates')
+            ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
