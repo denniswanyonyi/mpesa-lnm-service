@@ -1,11 +1,15 @@
 from django.http import JsonResponse
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.views.decorators.csrf import csrf_exempt
+from django.db.models.functions import Lower
+from django.db.models import CharField
 import json
 
 from datetime import datetime
 
 from .models import LnmTransaction
+
+CharField.register_lookup(Lower)
 
 @csrf_exempt
 def index(request):
@@ -18,6 +22,22 @@ def index(request):
 
     return render(request, "index.html", data)
 
+@csrf_exempt
+def details(request, tid):
+
+    transaction = get_object_or_404(LnmTransaction.objects.filter(transaction_id = tid.upper()))
+
+    print(transaction.transaction_id)
+
+    data = {
+        'title': tid.upper(),
+        'transaction': transaction
+    }
+
+    return render(request, "details.html", data)
+
+
+
 
 @csrf_exempt
 def c2b_validation(request):
@@ -28,7 +48,7 @@ def c2b_validation(request):
     c2b = LnmTransaction()
 
     c2b.transaction_type = data["TransactionType"]
-    c2b.transaction_id = data["TransID"]
+    c2b.transaction_id = data["TransID"].upper()
     c2b.mpesa_transaction_time = data["TransTime"]
     c2b.transaction_amount = data["TransAmount"]
     c2b.business_shortcode = data["BusinessShortCode"]
