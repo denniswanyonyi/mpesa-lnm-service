@@ -47,6 +47,28 @@
         <span>{{ transaction.confirmation_request_time | date }}</span>
     </div>
 
+    {% if transaction.validation_request is not None %}
+        <div class="card mt-4">
+            <div class="card-header">
+                Validation Request
+            </div>
+            <div class="card-body">
+                <p class="card-text">{{ transaction.validation_request }}</p>
+            </div>
+        </div>
+    {% endif %}
+
+    {% if transaction.confirmation_request is not None %}
+        <div class="card mt-4">
+            <div class="card-header">
+                Confirmation Request
+            </div>
+            <div class="card-body">
+                <p class="card-text">{{ transaction.confirmation_request }}</p>
+            </div>
+        </div>
+    {% endif %}
+
 
 </div>
 {% endblock %}
