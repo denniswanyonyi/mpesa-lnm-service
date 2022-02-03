@@ -1,19 +1,24 @@
 {% extends 'base.html' %}
+{% load humanize %}
 
 {% block title %} {{ title }} {% endblock %}
 
 {% block content %} 
 <div class="container p-4">
-    <h2 class="text-center">{{ title }}</h2>
-
+    <h2>{{ title }}</h2>
+    <div class="text-muted">
+        <strong>Transaction Type:</strong>
+        <span>{{ transaction.transaction_type }}</span>
+        &bull;
+        <strong>Transaction Date:</strong>
+        <span>{{ transaction.date_recorded }}</span>
+    </div>
+    <hr />
     <div>
         <label>Transaction Amount</label>
-        <span>{{ transaction.transaction_amount }}</span>
+        <span>{{ transaction.transaction_amount | intcomma }}</span>
     </div>
-    <div>
-        <label>Transaction Type</label>
-        <span>{{ transaction.transaction_type }}</span>
-    </div>
+
     <div>
         <label>Business ShortCode</label>
         <span>{{ transaction.business_shortcode }}</span>
@@ -26,17 +31,14 @@
         <label>MSISDN</label>
         <span>{{ transaction.msisdn }}</span>
     </div>
-    <div>
-        <label>Date</label>
-        <span>{{ transaction.date_recorded }}</span>
-    </div>
+
     <div>
         <label>Transaction Amount</label>
         <span>{{ transaction.transaction_amount }}</span>
     </div>
     <div>
         <label>Org Account Balance</label>
-        <span>{{ transaction.org_account_balance }}</span>
+        <span>{{ transaction.org_account_balance | intcomma }}</span>
     </div>
     <div>
         <label>C2B Validation Time</label>

@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load humanize %}
 
 {% block title %} C2B Transactions {% endblock %}
 
@@ -25,7 +26,7 @@
                         </a>
                     </td>
                     <td>{{ transaction.transaction_type }}</td>
-                    <td>{{ transaction.transaction_amount }}</td>
+                    <td>{{ transaction.transaction_amount | intcomma }}</td>
                     <td>{{ transaction.business_shortcode }}</td>
                     <td>{{ transaction.bill_refnumber }}</td>
                     <td>{{ transaction.msisdn }}</td>
