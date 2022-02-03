@@ -1,6 +1,7 @@
 from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404
 from django.views.decorators.csrf import csrf_exempt
+from django.db.models import Q
 
 import json
 import base64
@@ -11,8 +12,22 @@ from .models import LnmTransaction
 @csrf_exempt
 def index(request):
 
-    # print('query is ', q)
-    transactions = LnmTransaction.objects.order_by('-date_recorded')[:100]
+    search_query = request.GET.get('q', '')
+
+    # print('query is ', search_query)
+    transactions = []
+
+    # If a search parameter is defined, search and return results which have the search 
+    # string as part of the transaction_id, business_shortcode or msisdn(phone number)
+    if len(search_query) > 0:
+        transactions = LnmTransaction.objects.filter(
+            Q(transaction_id__contains=search_query.upper()) |
+            Q(business_shortcode__contains = search_query) |
+            Q(msisdn__contains=search_query)
+        ).order_by('-date_recorded')[:100]
+        
+    else:
+        transactions = LnmTransaction.objects.order_by('-date_recorded')[:100]
 
     data = {
         'transactions': transactions
@@ -45,10 +60,10 @@ def details(request, tid):
 
         return render(request, "notfound.html", { 'title': 'Transaction Not Found'})
 
-    # except Exception as ex:
-    #     print(ex)
+    except Exception as ex:
+        print(ex)
 
-    #     return render(request, "error.html", { 'title': 'An Error Occurred'})
+        return render(request, "error.html", { 'title': 'An Error Occurred'})
 
 
 
