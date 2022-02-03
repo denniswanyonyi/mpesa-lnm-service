@@ -19,7 +19,11 @@
         <tbody>
             {% for transaction in transactions %}
                 <tr>
-                    <td>{{ transaction.transaction_id }}</td>
+                    <td>
+                        <a href="/details/{{ transaction.transaction_id }}">
+                            {{ transaction.transaction_id }}
+                        </a>
+                    </td>
                     <td>{{ transaction.transaction_type }}</td>
                     <td>{{ transaction.transaction_amount }}</td>
                     <td>{{ transaction.business_shortcode }}</td>
@@ -27,7 +31,11 @@
                     <td>{{ transaction.msisdn }}</td>
                     <td>{{ transaction.date_recorded }}</td>
                     <td>{{ transaction.transaction_status }}</td>
-                    <td></td>
+                    <td>
+                        <button type="button" class="btn btn-sm btn-outline-primary">
+                            <i class="bi bi-zoom-in"></i>
+                        </button>
+                    </td>
 
                 </tr>
             {% endfor %}

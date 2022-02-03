@@ -19,3 +19,5 @@ class LnmTransaction(models.Model):
    transaction_status = models.TextField(max_length=30)
    validation_request_time = models.DateTimeField(null=True)
    confirmation_request_time = models.DateTimeField(null=True)
+   validation_request = models.TextField(max_length=3000, null=True)
+   confirmation_request = models.TextField(max_length=3000, null=True)

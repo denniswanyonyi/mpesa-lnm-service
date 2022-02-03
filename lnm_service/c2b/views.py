@@ -3,13 +3,14 @@ from django.shortcuts import render, get_object_or_404
 from django.views.decorators.csrf import csrf_exempt
 from django.db.models.functions import Lower
 from django.db.models import CharField
-import json
 
+import json
+import base64
 from datetime import datetime
 
 from .models import LnmTransaction
 
-CharField.register_lookup(Lower)
+# CharField.register_lookup(Lower)
 
 @csrf_exempt
 def index(request):
@@ -25,16 +26,21 @@ def index(request):
 @csrf_exempt
 def details(request, tid):
 
-    transaction = get_object_or_404(LnmTransaction.objects.filter(transaction_id = tid.upper()))
+    try:
+        transaction = LnmTransaction.objects.filter(transaction_id = tid.upper()).values()[0]
 
-    print(transaction.transaction_id)
+        print(transaction)
 
-    data = {
-        'title': tid.upper(),
-        'transaction': transaction
-    }
+        data = {
+            'title': tid.upper(),
+            'transaction': transaction
+        }
 
-    return render(request, "details.html", data)
+        return render(request, "details.html", data)
+    
+    except IndexError: # LnmTransaction.DoesNotExist:
+
+        return render(request, "notfound.html", { 'title': 'Transaction Not Found'})
 
 
 
@@ -60,6 +66,7 @@ def c2b_validation(request):
     c2b.first_name = data["FirstName"]
     c2b.middle_name = data["MiddleName"]
     c2b.last_name = data["LastName"]
+    c2b.validation_request = base64.b64encode(request.body.encode('utf-8')).decode('utf-8')
     # c2b.transaction_status = data[""]
     c2b.validation_request_time = datetime.now()
 
