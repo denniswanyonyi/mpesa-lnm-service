@@ -4,53 +4,91 @@
 {% block title %} Lipa Na M-Pesa Transactions {% endblock %}
 
 {% block content %}
-<div class="container-fluid p-4">
-    <table class="table table-sm table-striped ">
-        <thead>
-            <th>Transaction ID</th>
-            <th>Transaction Type</th>
-            <th>Amount</th>
-            <th>Business Number</th>
-            <th>Bill RefNumber</th>
-            <th>MSISDN</th>
-            <th>Date</th>
-            <th>Status</th>
-            <th>Operation</th>
-        </thead>
-        <tbody>
-            {% for transaction in transactions %}
-                <tr>
-                    <td>
-                        <a href="/details/{{ transaction.transaction_id }}">
-                            {{ transaction.transaction_id }}
-                        </a>
-                    </td>
-                    <td>{{ transaction.transaction_type }}</td>
-                    <td>{{ transaction.transaction_amount | intcomma }}</td>
-                    <td>
-                        <a href="{% url "home" %}?q={{ transaction.business_shortcode }}" data-bs-toggle="tooltip" title="Search transactions for Business Number {{ transaction.business_shortcode }}" class="text-decoration-none">
-                            {{ transaction.business_shortcode }}
-                            <i class="bi bi-info-circle"></i>
-                        </a>
-                    </td>
-                    <td>{{ transaction.bill_refnumber }}</td>
-                    <td>
-                        <a href="{% url "home" %}?q={{ transaction.msisdn }}" class="text-decoration-none" title="Search transactions for MSISDN {{ transaction.msisdn }}" data-bs-toggle="tooltip">
-                            {{ transaction.msisdn }}
-                            <i class="bi bi-info-circle"></i>
-                        </a>
-                    </td>
-                    <td>{{ transaction.date_recorded }}</td>
-                    <td>{{ transaction.transaction_status }}</td>
-                    <td>
-                        <button type="button" class="btn btn-sm btn-outline-primary">
-                            <i class="bi bi-zoom-in"></i>
-                        </button>
-                    </td>
+<div class="container p-4">
+    
+    <form class="row" method="post">
+        <div class="offset-md-6 col-md-6">
+            <h5 class="mb-4">Simulate Lipa Na M-Pesa Transaction</h5>
+            <div class="mb-3 row">
+                <div class="form-floating mb-3">
+                    <select required id="transactionTypeControl" class="form-select" name="command_id" aria-label="Choose Transaction Type">
+                        <option selected>Select transaction type</option>
+                        <option value="CustomerPayBillOnline">Pay Bill</option>
+                        <option value="CustomerBuyGoodsOnline">Buy Goods</option>
+                    </select>
+                    <label for="transactionTypeControl">Transaction Type</label>
+                </div>
 
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+                <div class="col-md">
+                    <div class="form-floating">
+                        <input type="text" class="form-control" id="accountNumberInput" required placeholder="Account Number for Pay Bill transactions" />
+                        <label for="accountNumberInput">Account Number</span>
+                    </div>
+                </div>
+
+                <div class="col-md">
+                    <div class="form-floating">
+                        <input type="number" id="transaction_amount" class="form-control" required min="1" max="150000" placeholder="Initiate Lipa Na Mpesa Payment" />
+                        <label for="transaction_amount">Amount</label>
+                    </div>
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-outline-dark form-control">
+                <i class="bi bi-send"></i>
+                Initate Transaction
+            </button>
+        </div>
+    </form>
+
+    <div class="container p-4">
+        <table class="table table-sm table-striped ">
+            <thead>
+                <th>Transaction ID</th>
+                <th>Transaction Type</th>
+                <th>Amount</th>
+                <th>Business Number</th>
+                <th>Bill RefNumber</th>
+                <th>MSISDN</th>
+                <th>Date</th>
+                <th>Status</th>
+                <th>Operation</th>
+            </thead>
+            <tbody>
+                {% for transaction in transactions %}
+                    <tr>
+                        <td>
+                            <a href="/details/{{ transaction.transaction_id }}">
+                                {{ transaction.transaction_id }}
+                            </a>
+                        </td>
+                        <td>{{ transaction.transaction_type }}</td>
+                        <td>{{ transaction.transaction_amount | intcomma }}</td>
+                        <td>
+                            <a href="{% url "home" %}?q={{ transaction.business_shortcode }}" data-bs-toggle="tooltip" title="Search transactions for Business Number {{ transaction.business_shortcode }}" class="text-decoration-none">
+                                {{ transaction.business_shortcode }}
+                                <i class="bi bi-info-circle"></i>
+                            </a>
+                        </td>
+                        <td>{{ transaction.bill_refnumber }}</td>
+                        <td>
+                            <a href="{% url "home" %}?q={{ transaction.msisdn }}" class="text-decoration-none" title="Search transactions for MSISDN {{ transaction.msisdn }}" data-bs-toggle="tooltip">
+                                {{ transaction.msisdn }}
+                                <i class="bi bi-info-circle"></i>
+                            </a>
+                        </td>
+                        <td>{{ transaction.date_recorded }}</td>
+                        <td>{{ transaction.transaction_status }}</td>
+                        <td>
+                            <button type="button" class="btn btn-sm btn-outline-primary">
+                                <i class="bi bi-zoom-in"></i>
+                            </button>
+                        </td>
+
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    <div>
 </div>
 {% endblock %}
