@@ -14,39 +14,51 @@
         <span>{{ transaction.date_recorded }}</span>
     </div>
     <hr />
-    <div>
-        <label>Transaction Amount</label>
-        <span>{{ transaction.transaction_amount | intcomma }}</span>
-    </div>
+    <div class="row">
+        <div class="col-sm-6">
+            <strong>Transaction Amount:</strong>
+            <span>{{ transaction.transaction_amount | intcomma }}</span>
+        </div>
 
-    <div>
-        <label>Business ShortCode</label>
-        <span>{{ transaction.business_shortcode }}</span>
-    </div>
-    <div>
-        <label>Bill Refnumer</label>
-        <span>{{ transaction.bill_refnumber }}</span>
-    </div>
-    <div>
-        <label>MSISDN</label>
-        <span>{{ transaction.msisdn }}</span>
-    </div>
+        <div class="col-sm-6">
+            <strong>Business ShortCode:</strong>
+            <span>
+                <a href="{% url "home" %}q={{ transaction.business_shortcode }}" class="text-decoration-none" data-bs-toggle="tooltip" title="Search transactions for Business Number {{ transaction.business_shortcode }}">
+                {{ transaction.business_shortcode }}
+                <i class="bi bi-info-circle"></i>
+                </a>
+            </span>
+        </div>
+        <div class="col-sm-6">
+            <strong>Bill Ref Number:</strong>
+            <span>{{ transaction.bill_refnumber }}</span>
+        </div>
+        <div class="col-sm-6">
+            <strong>MSISDN:</strong>
+            <span>
+                <a href="{% url "home" %}?q={{ transaction.msisdn }}" class="text-decoration-none" data-bs-toggle="tooltip" title="Search transactions for MSISDN {{ transaction.msisdn }}">
+                    {{ transaction.msisdn }}
+                    <i class="bi bi-info-circle"></i>
+                </a>
+            </span>
+        </div>
 
-    <div>
-        <label>Transaction Amount</label>
-        <span>{{ transaction.transaction_amount }}</span>
-    </div>
-    <div>
-        <label>Org Account Balance</label>
-        <span>{{ transaction.org_account_balance | intcomma }}</span>
-    </div>
-    <div>
-        <label>C2B Validation Time</label>
-        <span>{{ transaction.validation_request_time | date }}</span>
-    </div>
-    <div>
-        <label>C2B Confirmation Time</label>
-        <span>{{ transaction.confirmation_request_time | date }}</span>
+        <div class="col-sm-6">
+            <strong>Transaction Amount</strong>
+            <span>{{ transaction.transaction_amount }}</span>
+        </div>
+        <div class="col-sm-6">
+            <strong>Org Account Balance:</strong>
+            <span>{{ transaction.org_account_balance | intcomma }}</span>
+        </div>
+        <div class="col-sm-6">
+            <strong>C2B Validation Time:</strong>
+            <span>{{ transaction.validation_request_time }}</span>
+        </div>
+        <div class="col-sm-6">
+            <strong>C2B Confirmation Time:</strong>
+            <span>{{ transaction.confirmation_request_time }}</span>
+        </div>
     </div>
 
     {% if transaction.validation_request is not None %}

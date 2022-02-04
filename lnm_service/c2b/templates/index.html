@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load humanize %}
 
-{% block title %} C2B Transactions {% endblock %}
+{% block title %} Lipa Na M-Pesa Transactions {% endblock %}
 
 {% block content %}
 <div class="container-fluid p-4">
@@ -27,9 +27,19 @@
                     </td>
                     <td>{{ transaction.transaction_type }}</td>
                     <td>{{ transaction.transaction_amount | intcomma }}</td>
-                    <td>{{ transaction.business_shortcode }}</td>
+                    <td>
+                        <a href="{% url "home" %}?q={{ transaction.business_shortcode }}" data-bs-toggle="tooltip" title="Search transactions for Business Number {{ transaction.business_shortcode }}" class="text-decoration-none">
+                            {{ transaction.business_shortcode }}
+                            <i class="bi bi-info-circle"></i>
+                        </a>
+                    </td>
                     <td>{{ transaction.bill_refnumber }}</td>
-                    <td>{{ transaction.msisdn }}</td>
+                    <td>
+                        <a href="{% url "home" %}?q={{ transaction.msisdn }}" class="text-decoration-none" title="Search transactions for MSISDN {{ transaction.msisdn }}" data-bs-toggle="tooltip">
+                            {{ transaction.msisdn }}
+                            <i class="bi bi-info-circle"></i>
+                        </a>
+                    </td>
                     <td>{{ transaction.date_recorded }}</td>
                     <td>{{ transaction.transaction_status }}</td>
                     <td>

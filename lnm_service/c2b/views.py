@@ -25,7 +25,7 @@ def index(request):
             Q(business_shortcode__contains = search_query) |
             Q(msisdn__contains=search_query)
         ).order_by('-date_recorded')[:100]
-        
+
     else:
         transactions = LnmTransaction.objects.order_by('-date_recorded')[:100]
 
@@ -90,7 +90,8 @@ def c2b_validation(request):
     c2b.last_name = data["LastName"]
     c2b.validation_request = base64.b64encode(str(data).encode('utf-8')).decode('utf-8')
     # c2b.transaction_status = data[""]
-    c2b.validation_request_time = datetime.now()
+    c2b.date_recorded = datetime.now().strftime('%Y-%m-%d %H:%M:%S%z') # datetime.now()
+    c2b.validation_request_time = datetime.now().strftime('%Y-%m-%d %H:%M:%S%z') # datetime.now()
 
     # print(c2b)
 
@@ -114,7 +115,7 @@ def c2b_confirmation(request):
 
         transaction.transaction_status = "Successful"
         transaction.confirmation_request = base64.b64encode(str(data).encode("utf-8")).decode('utf-8')
-        transaction.confirmation_request_time = datetime.now()
+        transaction.confirmation_request_time = datetime.now().strftime('%Y-%m-%d %H:%M:%S%z') # datetime.now()
 
         transaction.save()
     
@@ -125,7 +126,7 @@ def c2b_confirmation(request):
 
         transaction.transaction_status = "Successful"
         transaction.confirmation_request = base64.b64encode(str(data).encode("utf-8")).decode('utf-8')
-        transaction.confirmation_request_time = datetime.now()
+        transaction.confirmation_request_time = datetime.now().strftime('%Y-%m-%d %H:%M:%S%z') # datetime.now()
         transaction.transaction_type = data["TransactionType"]
         transaction.transaction_id = data["TransID"].upper()
         transaction.mpesa_transaction_time = data["TransTime"]
@@ -139,6 +140,7 @@ def c2b_confirmation(request):
         transaction.first_name = data["FirstName"]
         transaction.middle_name = data["MiddleName"]
         transaction.last_name = data["LastName"]
+        transaction.date_recorded = datetime.now().strftime('%Y-%m-%d %H:%M:%S%z')
 
         transaction.save()
 
