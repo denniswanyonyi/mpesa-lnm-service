@@ -1,39 +1,74 @@
 from django.http import JsonResponse
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 from django.db.models import Q
 
-import json
 import base64
 from datetime import datetime
+import json
+import requests
+import os
 
 from .models import LnmTransaction
 
 @csrf_exempt
 def index(request):
 
-    search_query = request.GET.get('q', '')
+    if request.method == 'POST':
+        # print("body")
+        # print(request.body)
+        # print(request.POST)
 
-    # print('query is ', search_query)
-    transactions = []
+        request_body = request.POST
 
-    # If a search parameter is defined, search and return results which have the search 
-    # string as part of the transaction_id, business_shortcode or msisdn(phone number)
-    if len(search_query) > 0:
-        transactions = LnmTransaction.objects.filter(
-            Q(transaction_id__contains=search_query.upper()) |
-            Q(business_shortcode__contains = search_query) |
-            Q(msisdn__contains=search_query)
-        ).order_by('-date_recorded')[:100]
+        url = 'https://sandbox.safaricom.co.ke/mpesa/c2b/v1/simulate'
 
-    else:
-        transactions = LnmTransaction.objects.order_by('-date_recorded')[:100]
+        c2b = {  
+            "Command ID": request_body["command_id"],
+            "Amount": int(request_body["transaction_amount"]),
+            "Msisdn": "254708374149",
+            "BillRefNumber": request_body["account_number"],
+            "ShortCode": "600247"
+        }
 
-    data = {
-        'transactions': transactions
-    }
+        if c2b["Command ID"] == "CustomerBuyGoodsOnline":
+            del c2b["BillRefNumber"]
 
-    return render(request, "index.html", data)
+
+        print(os.environ["C2B_ACCESS_TOKEN"])
+        print(c2b)
+
+        headers = { "Authorization": "Bearer {}".format(os.environ["C2B_ACCESS_TOKEN"]) }
+        c2b_request = requests.post(url, c2b, headers=headers)
+
+        print(c2b_request.json())
+
+        return render(request, "index.html", {})
+    
+    elif request.method == 'GET':
+
+        search_query = request.GET.get('q', '')
+
+        # print('query is ', search_query)
+        transactions = []
+
+        # If a search parameter is defined, search and return results which have the search 
+        # string as part of the transaction_id, business_shortcode or msisdn(phone number)
+        if len(search_query) > 0:
+            transactions = LnmTransaction.objects.filter(
+                Q(transaction_id__contains=search_query.upper()) |
+                Q(business_shortcode__contains = search_query) |
+                Q(msisdn__contains=search_query)
+            ).order_by('-date_recorded')[:100]
+
+        else:
+            transactions = LnmTransaction.objects.order_by('-date_recorded')[:100]
+
+        data = {
+            'transactions': transactions
+        }
+
+        return render(request, "index.html", data)
 
 @csrf_exempt
 def details(request, tid):
@@ -64,9 +99,6 @@ def details(request, tid):
         print(ex)
 
         return render(request, "error.html", { 'title': 'An Error Occurred'})
-
-
-
 
 @csrf_exempt
 def c2b_validation(request):

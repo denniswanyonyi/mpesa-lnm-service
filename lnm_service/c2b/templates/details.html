@@ -23,7 +23,7 @@
         <div class="col-sm-6">
             <strong>Business ShortCode:</strong>
             <span>
-                <a href="{% url "home" %}q={{ transaction.business_shortcode }}" class="text-decoration-none" data-bs-toggle="tooltip" title="Search transactions for Business Number {{ transaction.business_shortcode }}">
+                <a href="{% url "home" %}?q={{ transaction.business_shortcode }}" class="text-decoration-none" data-bs-toggle="tooltip" title="Search transactions for Business Number {{ transaction.business_shortcode }}">
                 {{ transaction.business_shortcode }}
                 <i class="bi bi-info-circle"></i>
                 </a>

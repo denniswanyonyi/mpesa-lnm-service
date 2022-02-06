@@ -8,7 +8,7 @@
     
     <form class="row" method="post">
         <div class="offset-md-6 col-md-6">
-            <h5 class="mb-4">Simulate Lipa Na M-Pesa Transaction</h5>
+            <h5 class="mb-4 text-decoration-underline text-center">Simulate Lipa Na M-Pesa Transaction</h5>
             <div class="mb-3 row">
                 <div class="form-floating mb-3">
                     <select required id="transactionTypeControl" class="form-select" name="command_id" aria-label="Choose Transaction Type">
@@ -21,14 +21,14 @@
 
                 <div class="col-md">
                     <div class="form-floating">
-                        <input type="text" class="form-control" id="accountNumberInput" required placeholder="Account Number for Pay Bill transactions" />
-                        <label for="accountNumberInput">Account Number</span>
+                        <input type="text" class="form-control" id="accountNumberInput" name="account_number" required placeholder="Account Number for Pay Bill transactions" />
+                        <label for="accountNumberInput">Account Number (Kshs.)</span>
                     </div>
                 </div>
 
                 <div class="col-md">
                     <div class="form-floating">
-                        <input type="number" id="transaction_amount" class="form-control" required min="1" max="150000" placeholder="Initiate Lipa Na Mpesa Payment" />
+                        <input type="number" id="transaction_amount" name="transaction_amount" class="form-control" required min="1" max="150000" placeholder="Initiate Lipa Na Mpesa Payment" />
                         <label for="transaction_amount">Amount</label>
                     </div>
                 </div>
@@ -41,18 +41,26 @@
         </div>
     </form>
 
-    <div class="container p-4">
+    <div class="container p-0">
+
+        {% if 'q' in request.GET %}
+            <div class="my-4 text-success">
+                <i class="bi bi-search"></i>
+                Search Results for: {{ request.GET.q }}
+            </div>        
+        {% endif %}
+
         <table class="table table-sm table-striped ">
             <thead>
-                <th>Transaction ID</th>
-                <th>Transaction Type</th>
-                <th>Amount</th>
-                <th>Business Number</th>
-                <th>Bill RefNumber</th>
-                <th>MSISDN</th>
-                <th>Date</th>
-                <th>Status</th>
-                <th>Operation</th>
+                <th class="lead">Transaction ID</th>
+                <th class="lead">Transaction Type</th>
+                <th class="lead">Amount</th>
+                <th class="lead">Business Number</th>
+                <th class="lead">Bill RefNumber</th>
+                <th class="lead">MSISDN</th>
+                <th class="lead">Date</th>
+                <th class="lead">Status</th>
+                <th class="lead">Operation</th>
             </thead>
             <tbody>
                 {% for transaction in transactions %}
