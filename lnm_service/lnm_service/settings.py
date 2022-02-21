@@ -11,7 +11,8 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 
 from pathlib import Path
-from os import path
+import os
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -24,9 +25,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-*g47l^39@%q5hw!ew%^)qnq4p8u1is@n8cb@=u=ua+)$p0r%%-'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get("LNM_SERVICE_DEBUG")
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # CSRF_COOKIE_SECURE = False
@@ -46,6 +47,7 @@ INSTALLED_APPS = [
     'django.contrib.humanize',
 
     # Custom apps
+    'lnm_service',
     'c2b'
 ]
 
@@ -65,7 +67,7 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
-            path.join(BASE_DIR, 'c2b', 'templates')
+            os.path.join(BASE_DIR, 'c2b', 'templates')
             ],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -145,7 +147,7 @@ DATETIME_INPUT_FORMATS = [
 
 STATIC_URL = 'static/'
 STATICFILE_DIRS = [
-    path.join(BASE_DIR, 'static')
+    os.path.join(BASE_DIR, 'static')
 ]
 
 # Default primary key field type
