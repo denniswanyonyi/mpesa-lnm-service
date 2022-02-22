@@ -39,3 +39,10 @@ The IP can be the load balanced IP that forwards traffic to the deployed applica
    "LastName":"Wanyonyi"
 }`
 
+
+## Build Docker Image
+
+The project comes with a Dockerfile that can be used to build this django project to a docker image. The name of the image is up to you but for the commands below, we'll name the image the same as the project. In order to build a docker image, ensure you have docker installed on your machine and run below command
+
+`docker build -t lnm_service .`
+

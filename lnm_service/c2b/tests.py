@@ -6,6 +6,7 @@ from .views import index, details, c2b_validation, c2b_confirmation
 class ViewsTestCase(TestCase):
 
     # Create your tests here.
+
     def test_home_page_status_code_success(self):
 
         client = Client()
